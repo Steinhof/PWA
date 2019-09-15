@@ -14,7 +14,8 @@ self.addEventListener('install', function (event) {
         caches.open(CACHE_NAME)
             .then(cache => {
                 return cache.addAll(CACHED_URLS);
-            }));
+            })
+            .catch(error => console.error(error)));
     console.log('service worker installed');
 });
 
@@ -30,7 +31,7 @@ self.addEventListener('activate', function (event) {
                             return caches.delete(item);
                         }
                     })
-                );
+                ).catch(error => console.error(error));
             })
     );
     console.log('service worker activated');
@@ -43,6 +44,7 @@ self.addEventListener('fetch', function (event) {
             .then(function (response) {
                 return response || fetch(event.request);
             })
+            .catch(error => console.error(error))
     );
     console.log('fetch complete');
 });
